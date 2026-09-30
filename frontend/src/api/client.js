@@ -4,7 +4,7 @@ import axios from 'axios';
 const getToken = () => localStorage.getItem('token');
 
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  baseURL: import.meta.env.VITE_API_URL || 'https://roadshare-ai-2.onrender.com/api',
   headers: {
     'Content-Type': 'application/json'
   }
