@@ -18,6 +18,13 @@ export const chatWithAgent = async (req, res) => {
 
   } catch (error) {
     console.error('Agent Error:', error);
-    res.status(500).json({ success: false, message: "I couldn't process that right now. Please try again." });
+    
+    // Instead of returning 500 which triggers the generic UI fallback,
+    // we return 200 so the UI displays the actual error as a message from the agent.
+    const errorMessage = error?.status === 503 
+        ? "The AI model is currently experiencing high demand. Please try again in a few moments."
+        : "I encountered an error trying to process your request. Please try again.";
+        
+    res.status(200).json({ success: false, message: errorMessage });
   }
 };
