@@ -12,6 +12,7 @@ export const config = {
   supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
   jwtSecret: process.env.JWT_SECRET || 'super-secret-jwt-key-for-dev',
   bcryptRounds: parseInt(process.env.BCRYPT_ROUNDS || '12', 10),
+  geminiApiKey: process.env.GEMINI_API_KEY,
   matching: {
     maxClusterRadius: process.env.MAX_CLUSTER_RADIUS || 2000, // meters
     maxWaitDifference: process.env.MAX_WAIT_DIFFERENCE || 5 * 60, // seconds
