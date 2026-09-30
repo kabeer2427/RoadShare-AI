@@ -9,17 +9,27 @@ const DriverDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [demandZones, setDemandZones] = useState([]);
 
+  const [stats, setStats] = useState({ todayRevenue: 0, completedTrips: 0, seatsServed: 0, avgRevenuePerTrip: 0 });
+
+  useEffect(() => {
+    // Fetch initial stats
+    apiClient.get('/rides/dashboard-stats')
+      .then(res => {
+        if (res.data?.success) setStats(res.data.data);
+      })
+      .catch(err => console.error('Failed to load stats', err));
+  }, []);
+
   useEffect(() => {
     let watchId;
     
     if (isOnline) {
-      // Mocking AI demand zones fetching
-      const mockZones = [
-        { name: 'MP Nagar Zone II', multiplier: 1.4, requests: 12 },
-        { name: 'Habibganj Station', multiplier: 1.8, requests: 24 },
-        { name: 'BHEL Sector A', multiplier: 1.2, requests: 8 },
-      ];
-      setDemandZones(mockZones);
+      // Fetch real AI demand zones
+      apiClient.get('/heatmap/demand')
+        .then(res => {
+          if (res.data?.success) setDemandZones(res.data.data);
+        })
+        .catch(err => console.error('Failed to fetch demand', err));
 
       // Start geolocation tracking
       if ('geolocation' in navigator) {
@@ -141,18 +151,18 @@ const DriverDashboard = () => {
             <span className="text-brand-50 text-sm font-bold uppercase tracking-wider">Today's Revenue</span>
             <DollarSign className="text-white w-5 h-5 opacity-70" />
           </div>
-          <div className="text-5xl font-black mb-6">₹842</div>
+          <div className="text-5xl font-black mb-6">₹{stats.todayRevenue}</div>
           <div className="grid grid-cols-3 gap-2 border-t border-white/20 pt-4">
             <div>
-              <div className="text-2xl font-bold">12</div>
+              <div className="text-2xl font-bold">{stats.completedTrips}</div>
               <div className="text-xs text-brand-100 font-medium">Trips</div>
             </div>
             <div>
-              <div className="text-2xl font-bold">27</div>
-              <div className="text-xs text-brand-100 font-medium">Pax</div>
+              <div className="text-2xl font-bold">{stats.seatsServed}</div>
+              <div className="text-xs text-brand-100 font-medium">Seats Served</div>
             </div>
             <div>
-              <div className="text-2xl font-bold">4.2</div>
+              <div className="text-2xl font-bold">{stats.avgRevenuePerTrip}</div>
               <div className="text-xs text-brand-100 font-medium">Avg/Trip</div>
             </div>
           </div>

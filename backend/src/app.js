@@ -29,6 +29,7 @@ import driverRoutes from './routes/driverRoutes.js';
 import matchingRoutes from './routes/matchingRoutes.js';
 import heatmapRoutes from './routes/heatmapRoutes.js';
 import agentRoutes from './routes/agentRoutes.js';
+import rideRoutes from './routes/rideRoutes.js';
 
 // Health check routes
 app.get('/', (req, res) => res.json({ success: true, message: 'Roadshare AI API is running' }));
@@ -39,6 +40,7 @@ app.use('/api/drivers', driverRoutes);
 app.use('/api/matching', matchingRoutes);
 app.use('/api/heatmap', heatmapRoutes);
 app.use('/api/agent', agentRoutes);
+app.use('/api/rides', rideRoutes);
 
 // 404 Handler
 app.use((req, res, next) => {
