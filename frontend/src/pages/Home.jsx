@@ -25,10 +25,10 @@ const Home = () => {
             </p>
             <div className="mt-10 flex items-center gap-x-6">
               <Link to="/register" className="rounded-xl bg-brand px-6 py-3.5 text-sm font-bold text-white shadow-lg hover:bg-brand-dark hover:-translate-y-0.5 transition-all flex items-center gap-2">
-                <Navigation className="h-4 w-4" /> Become a Partner
+                <Navigation className="h-4 w-4" /> Get Started
               </Link>
               <Link to="/login" className="text-sm font-bold leading-6 text-gray-900 hover:text-brand transition-colors flex items-center gap-2 group">
-                Driver Login <span className="group-hover:translate-x-1 transition-transform" aria-hidden="true">→</span>
+                Login <span className="group-hover:translate-x-1 transition-transform" aria-hidden="true">→</span>
               </Link>
             </div>
           </div>

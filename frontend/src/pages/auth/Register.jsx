@@ -5,7 +5,7 @@ import { User, Car, FileCheck, CheckCircle2, Navigation } from 'lucide-react';
 
 const Register = () => {
   const [step, setStep] = useState(1);
-  const role = 'driver';
+  const [role, setRole] = useState('driver'); // 'driver' or 'commuter'
   
   const [formData, setFormData] = useState({
     name: '',
@@ -36,7 +36,9 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (step < 3) {
+    
+    // If driver, we need 3 steps. If commuter, we only need 1 step.
+    if (role === 'driver' && step < 3) {
       nextStep();
       return;
     }
@@ -48,7 +50,11 @@ const Register = () => {
       const payload = { ...formData, role };
       
       const user = await register(payload);
-      navigate('/driver');
+      if (role === 'driver') {
+        navigate('/driver');
+      } else {
+        navigate('/commuter');
+      }
     } catch (err) {
       setError(err.response?.data?.error?.message || err.response?.data?.message || 'Failed to register');
     } finally {
@@ -61,22 +67,24 @@ const Register = () => {
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
         <Navigation className="mx-auto h-12 w-12 text-brand" />
         <h2 className="mt-4 text-center text-3xl font-black tracking-tight text-gray-900">
-          Become a MoveFlow Driver
+          Join MoveFlow AI
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600 font-medium">
-          Drive Smarter. Earn More. Waste Less.
+          The smart mobility network for everyone.
         </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow-xl shadow-gray-200/50 sm:rounded-2xl sm:px-10 border border-gray-100 relative overflow-hidden">
           
-          <div className="flex items-center justify-between mb-8 relative">
-            <div className="absolute left-0 top-1/2 w-full h-0.5 bg-gray-100 -z-10"></div>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step >= 1 ? 'bg-brand text-white shadow-md shadow-brand/30' : 'bg-gray-100 text-gray-400'}`}>1</div>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step >= 2 ? 'bg-brand text-white shadow-md shadow-brand/30' : 'bg-gray-100 text-gray-400'}`}>2</div>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step >= 3 ? 'bg-brand text-white shadow-md shadow-brand/30' : 'bg-gray-100 text-gray-400'}`}>3</div>
-          </div>
+          {role === 'driver' && (
+            <div className="flex items-center justify-between mb-8 relative">
+              <div className="absolute left-0 top-1/2 w-full h-0.5 bg-gray-100 -z-10"></div>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step >= 1 ? 'bg-brand text-white shadow-md shadow-brand/30' : 'bg-gray-100 text-gray-400'}`}>1</div>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step >= 2 ? 'bg-brand text-white shadow-md shadow-brand/30' : 'bg-gray-100 text-gray-400'}`}>2</div>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step >= 3 ? 'bg-brand text-white shadow-md shadow-brand/30' : 'bg-gray-100 text-gray-400'}`}>3</div>
+            </div>
+          )}
 
           <form className="space-y-6" onSubmit={handleSubmit}>
             {error && (
@@ -88,6 +96,23 @@ const Register = () => {
             {/* STEP 1 */}
             {step === 1 && (
               <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-300">
+                <div className="flex bg-gray-100 p-1 rounded-xl mb-6">
+                  <button
+                    type="button"
+                    onClick={() => setRole('commuter')}
+                    className={`flex-1 py-2 text-sm font-bold rounded-lg transition-colors ${role === 'commuter' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500'}`}
+                  >
+                    Passenger
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setRole('driver')}
+                    className={`flex-1 py-2 text-sm font-bold rounded-lg transition-colors ${role === 'driver' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500'}`}
+                  >
+                    Driver
+                  </button>
+                </div>
+
                 <div className="flex items-center gap-2 mb-4">
                   <User className="w-5 h-5 text-brand" />
                   <h3 className="text-lg font-bold text-gray-900">Personal Details</h3>
@@ -199,7 +224,7 @@ const Register = () => {
                 disabled={loading}
                 className={`flex justify-center rounded-xl bg-brand px-3 py-3 text-sm font-bold text-white shadow-lg shadow-brand/30 hover:bg-brand-dark hover:-translate-y-0.5 transition-all disabled:opacity-50 ${step > 1 ? 'flex-[2]' : 'w-full'}`}
               >
-                {loading ? 'Processing...' : (step < 3 ? 'Continue →' : 'Complete Registration')}
+                {loading ? 'Processing...' : ((role === 'driver' && step < 3) ? 'Continue →' : 'Complete Registration')}
               </button>
             </div>
           </form>

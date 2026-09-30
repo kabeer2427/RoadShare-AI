@@ -17,9 +17,13 @@ const Login = () => {
     setLoading(true);
     
     try {
-      const user = await login({ email, password });
-      // Always redirect to driver dashboard since this is a driver-first app
-      navigate('/driver');
+      const { user } = await login({ email, password });
+      
+      if (user?.role === 'commuter' || user?.role === 'passenger') {
+        navigate('/commuter');
+      } else {
+        navigate('/driver');
+      }
     } catch (err) {
       setError(err.response?.data?.error?.message || err.response?.data?.message || 'Failed to login. Please check your credentials.');
     } finally {
@@ -32,10 +36,10 @@ const Login = () => {
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
         <Navigation className="mx-auto h-12 w-12 text-brand" />
         <h2 className="mt-4 text-center text-3xl font-black tracking-tight text-gray-900">
-          Driver Portal
+          Welcome Back
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600 font-medium">
-          Sign in to access your intelligent dashboard
+          Sign in to access your MoveFlow dashboard
         </p>
       </div>
 
@@ -88,15 +92,15 @@ const Login = () => {
                 disabled={loading}
                 className="flex w-full justify-center rounded-xl bg-brand px-3 py-3 text-sm font-bold text-white shadow-lg shadow-brand/30 hover:bg-brand-dark hover:-translate-y-0.5 transition-all disabled:opacity-75 disabled:hover:translate-y-0 disabled:cursor-not-allowed"
               >
-                {loading ? 'Signing in...' : 'Sign in as Driver'}
+                {loading ? 'Signing in...' : 'Sign in'}
               </button>
             </div>
           </form>
 
           <p className="mt-6 text-center text-sm text-gray-500 font-medium">
-            Not registered as a driver yet?{' '}
+            Don't have an account?{' '}
             <Link to="/register" className="font-bold text-brand hover:text-brand-dark transition-colors">
-              Apply now
+              Sign up now
             </Link>
           </p>
         </div>

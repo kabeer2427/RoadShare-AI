@@ -11,6 +11,10 @@ import DriverDashboard from './pages/driver/DriverDashboard';
 import DriverProfile from './pages/driver/DriverProfile';
 import DriverRequests from './pages/driver/DriverRequests';
 import DriverRides from './pages/driver/DriverRides';
+import CommuterDashboard from './pages/commuter/CommuterDashboard';
+import CommuterRides from './pages/commuter/CommuterRides';
+import CommuterProfile from './pages/commuter/CommuterProfile';
+import CommuterBottomNav from './components/CommuterBottomNav';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import LiveMap from './pages/LiveMap';
 import MoveFlowAssistant from './components/ai/MoveFlowAssistant';
@@ -40,6 +44,7 @@ const LayoutWrapper = ({ children }) => {
         {children}
       </main>
       {user && user.role === 'driver' && <DriverBottomNav />}
+      {user && (user.role === 'commuter' || user.role === 'passenger') && <CommuterBottomNav />}
       <AssistantWrapper />
     </>
   );
@@ -79,6 +84,24 @@ function App() {
               <Route path="/driver/rides" element={
                 <ProtectedRoute allowedRoles={['driver']}>
                   <DriverRides />
+                </ProtectedRoute>
+              } />
+
+              <Route path="/commuter" element={
+                <ProtectedRoute allowedRoles={['commuter', 'passenger']}>
+                  <CommuterDashboard />
+                </ProtectedRoute>
+              } />
+
+              <Route path="/commuter/rides" element={
+                <ProtectedRoute allowedRoles={['commuter', 'passenger']}>
+                  <CommuterRides />
+                </ProtectedRoute>
+              } />
+
+              <Route path="/commuter/profile" element={
+                <ProtectedRoute allowedRoles={['commuter', 'passenger']}>
+                  <CommuterProfile />
                 </ProtectedRoute>
               } />
               
