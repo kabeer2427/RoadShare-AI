@@ -24,6 +24,9 @@ ALTER TABLE driver_locations ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can read own profile" ON profiles
     FOR SELECT USING (id::text = current_setting('request.jwt.claim.sub', true));
 
+CREATE POLICY "Users can insert own profile" ON profiles
+    FOR INSERT WITH CHECK (id::text = current_setting('request.jwt.claim.sub', true));
+
 CREATE POLICY "Users can update own profile" ON profiles
     FOR UPDATE USING (id::text = current_setting('request.jwt.claim.sub', true));
 
@@ -40,6 +43,9 @@ CREATE POLICY "Public can view online drivers" ON drivers
 
 CREATE POLICY "Drivers can update their own status" ON drivers
     FOR UPDATE USING (profile_id::text = current_setting('request.jwt.claim.sub', true));
+
+CREATE POLICY "Drivers can insert their own status" ON drivers
+    FOR INSERT WITH CHECK (profile_id::text = current_setting('request.jwt.claim.sub', true));
 
 -- RIDE REQUESTS
 -- Commuter policies removed in driver-first migration
