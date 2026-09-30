@@ -19,11 +19,13 @@ const mockVehicles = [
   { id: 3, position: { lat: 23.2550, lng: 77.4100 }, type: 'available' },
 ];
 
+const libraries = ['visualization'];
+
 const LiveMap = () => {
-  const { isLoaded } = useJsApiLoader({
+  const { isLoaded, loadError } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '', // Provide a fallback or leave empty for dev mode
-    libraries: ['visualization']
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '',
+    libraries
   });
 
   const [map, setMap] = useState(null);
@@ -35,6 +37,15 @@ const LiveMap = () => {
   const onUnmount = useCallback(function callback(map) {
     setMap(null);
   }, []);
+
+  if (loadError) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-gray-50 text-red-500 font-bold text-xl px-4 text-center">
+        <p>Google Maps couldn't be loaded.</p>
+        <p className="text-sm text-gray-500 mt-2 font-medium">{loadError.message || "Please check your API key and network connection."}</p>
+      </div>
+    );
+  }
 
   if (!isLoaded) return <div className="flex items-center justify-center h-screen bg-gray-50 text-brand font-bold text-xl">Loading Map...</div>;
 

@@ -10,6 +10,7 @@ import DriverDashboard from './pages/driver/DriverDashboard';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import LiveMap from './pages/LiveMap';
 import MoveFlowAssistant from './components/ai/MoveFlowAssistant';
+import ErrorBoundary from './components/ErrorBoundary';
 
 // Placeholders for modular development
 // const CommuterDashboard = () => <div>Commuter Dashboard</div>;
@@ -34,9 +35,10 @@ const AssistantWrapper = () => {
 function App() {
   return (
     <BrowserRouter>
-      <div className="flex flex-col min-h-screen">
-        <Navbar />
-        <main className="flex-1 flex flex-col relative">
+      <ErrorBoundary>
+        <div className="flex flex-col min-h-screen">
+          <Navbar />
+          <main className="flex-1 flex flex-col relative">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/live-map" element={<LiveMap />} />
@@ -64,6 +66,7 @@ function App() {
           <AssistantWrapper />
         </main>
       </div>
+      </ErrorBoundary>
     </BrowserRouter>
   );
 }
