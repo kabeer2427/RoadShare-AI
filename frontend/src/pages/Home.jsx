@@ -14,11 +14,11 @@ const Home = () => {
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 lg:flex lg:items-center lg:gap-x-16">
           <div className="mx-auto max-w-2xl lg:mx-0 lg:flex-auto">
             <div className="flex items-center gap-2 mb-8 bg-brand-50 w-max px-4 py-2 rounded-full border border-brand-100">
-              <BrainCircuit className="h-5 w-5 text-brand-DEFAULT" />
+              <BrainCircuit className="h-5 w-5 text-brand" />
               <span className="text-sm font-bold text-brand-dark tracking-wide uppercase">AI-Powered Shared Mobility</span>
             </div>
             <h1 className="text-5xl font-black tracking-tight text-gray-900 sm:text-7xl leading-tight">
-              Move More.<br/>Wait Less.<br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-DEFAULT to-blue-600">Share Smarter.</span>
+              Move More.<br/>Wait Less.<br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-brand to-blue-600">Share Smarter.</span>
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600 font-medium">
               India's first AI-driven mobility network that dynamically clusters nearby commuters and optimizes shared routes for e-rickshaws and autos in real-time.
@@ -27,7 +27,7 @@ const Home = () => {
               <Link to="/register" className="rounded-xl bg-gray-900 px-6 py-3.5 text-sm font-bold text-white shadow-lg hover:bg-gray-800 hover:-translate-y-0.5 transition-all flex items-center gap-2">
                 <Navigation className="h-4 w-4" /> Book a Shared Ride
               </Link>
-              <Link to="/register?role=driver" className="text-sm font-bold leading-6 text-gray-900 hover:text-brand-DEFAULT transition-colors flex items-center gap-2 group">
+              <Link to="/register?role=driver" className="text-sm font-bold leading-6 text-gray-900 hover:text-brand transition-colors flex items-center gap-2 group">
                 Drive & Earn <span className="group-hover:translate-x-1 transition-transform" aria-hidden="true">→</span>
               </Link>
             </div>
@@ -76,7 +76,7 @@ const Home = () => {
                   {/* AI Floating Card */}
                   <div className="absolute top-8 right-6 bg-white/90 backdrop-blur rounded-xl shadow-xl border border-gray-100 p-4 w-48 z-30 transform hover:scale-105 transition-transform cursor-default">
                     <div className="flex items-center gap-2 mb-2">
-                      <BrainCircuit className="w-4 h-4 text-brand-DEFAULT" />
+                      <BrainCircuit className="w-4 h-4 text-brand" />
                       <span className="text-xs font-bold text-gray-900 uppercase">AI Prediction</span>
                     </div>
                     <div className="font-black text-gray-900 mb-1">MP Nagar</div>
@@ -96,7 +96,7 @@ const Home = () => {
                     <div className="text-xs font-bold text-gray-500 uppercase">Live Requests</div>
                   </div>
                   <div className="px-4">
-                    <div className="text-2xl font-black text-brand-DEFAULT">14</div>
+                    <div className="text-2xl font-black text-brand">14</div>
                     <div className="text-xs font-bold text-gray-500 uppercase">AI Clusters</div>
                   </div>
                   <div className="px-4">
@@ -113,7 +113,7 @@ const Home = () => {
       <div id="how-it-works" className="py-24 sm:py-32 bg-gray-50 relative">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-base font-bold leading-7 text-brand-DEFAULT uppercase tracking-wider">System Architecture</h2>
+            <h2 className="text-base font-bold leading-7 text-brand uppercase tracking-wider">System Architecture</h2>
             <p className="mt-2 text-4xl font-black tracking-tight text-gray-900 sm:text-5xl">How MoveFlow Works</p>
           </div>
           
@@ -129,7 +129,7 @@ const Home = () => {
                 <div key={item.step} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 relative overflow-hidden group hover:shadow-md transition-shadow">
                   <div className="text-5xl font-black text-gray-50 absolute -top-2 -right-2 z-0">{item.step}</div>
                   <div className="relative z-10">
-                    <div className="w-12 h-12 rounded-xl bg-brand-50 flex items-center justify-center mb-6 text-brand-DEFAULT group-hover:scale-110 transition-transform">
+                    <div className="w-12 h-12 rounded-xl bg-brand-50 flex items-center justify-center mb-6 text-brand group-hover:scale-110 transition-transform">
                       <item.icon className="w-6 h-6" />
                     </div>
                     <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>
@@ -176,7 +176,7 @@ const Home = () => {
             </div>
             
             <div className="bg-gray-900 rounded-3xl p-8 lg:p-12 text-white relative overflow-hidden">
-               <div className="absolute top-0 right-0 w-64 h-64 bg-brand-DEFAULT rounded-full blur-[100px] opacity-20 transform translate-x-1/2 -translate-y-1/2"></div>
+               <div className="absolute top-0 right-0 w-64 h-64 bg-brand rounded-full blur-[100px] opacity-20 transform translate-x-1/2 -translate-y-1/2"></div>
                
                <h3 className="text-xl font-bold mb-8">System Intelligence</h3>
                

@@ -26,7 +26,7 @@ const AdminDashboard = () => {
         
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
-            <div className="bg-brand-DEFAULT p-2 rounded-lg">
+            <div className="bg-brand p-2 rounded-lg">
               <Shield className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -46,7 +46,7 @@ const AdminDashboard = () => {
             { label: 'Drivers', value: stats.activeDrivers, icon: Car, color: 'text-blue-400', bg: 'bg-blue-400/10' },
             { label: 'Requests', value: stats.totalRides, icon: Users, color: 'text-orange-400', bg: 'bg-orange-400/10' },
             { label: 'Clusters', value: stats.activeClusters, icon: Map, color: 'text-purple-400', bg: 'bg-purple-400/10' },
-            { label: 'Shared Rides', value: stats.sharedRides, icon: Activity, color: 'text-brand-DEFAULT', bg: 'bg-brand-DEFAULT/10' },
+            { label: 'Shared Rides', value: stats.sharedRides, icon: Activity, color: 'text-brand', bg: 'bg-brand/10' },
           ].map((stat, i) => (
             <div key={i} className="bg-[#1e293b] rounded-2xl p-6 border border-[#334155]">
               <div className="flex items-center gap-4">
@@ -69,7 +69,7 @@ const AdminDashboard = () => {
             <div className="bg-[#1e293b] rounded-2xl border border-[#334155] overflow-hidden flex flex-col h-[500px]">
               <div className="p-4 border-b border-[#334155] flex justify-between items-center bg-[#0f172a]/50">
                 <h3 className="font-bold uppercase tracking-wider text-sm flex items-center gap-2">
-                  <Map className="w-4 h-4 text-brand-DEFAULT" /> Live Demand Heatmap
+                  <Map className="w-4 h-4 text-brand" /> Live Demand Heatmap
                 </h3>
                 <div className="flex gap-4 text-xs font-bold">
                   <div className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500"></span> High</div>
@@ -129,15 +129,15 @@ const AdminDashboard = () => {
                  <div className="space-y-3">
                    <div className="flex justify-between items-center bg-[#0f172a] p-3 rounded-lg border border-[#334155]">
                      <div className="font-bold text-sm">Cluster #102</div>
-                     <div className="text-xs bg-brand-DEFAULT text-white px-2 py-1 rounded font-bold">4 riders</div>
+                     <div className="text-xs bg-brand text-white px-2 py-1 rounded font-bold">4 riders</div>
                    </div>
                    <div className="flex justify-between items-center bg-[#0f172a] p-3 rounded-lg border border-[#334155]">
                      <div className="font-bold text-sm">Cluster #103</div>
-                     <div className="text-xs bg-brand-DEFAULT text-white px-2 py-1 rounded font-bold">3 riders</div>
+                     <div className="text-xs bg-brand text-white px-2 py-1 rounded font-bold">3 riders</div>
                    </div>
                    <div className="flex justify-between items-center bg-[#0f172a] p-3 rounded-lg border border-[#334155]">
                      <div className="font-bold text-sm">Cluster #104</div>
-                     <div className="text-xs bg-brand-DEFAULT text-white px-2 py-1 rounded font-bold">2 riders</div>
+                     <div className="text-xs bg-brand text-white px-2 py-1 rounded font-bold">2 riders</div>
                    </div>
                  </div>
                </div>
@@ -148,7 +148,7 @@ const AdminDashboard = () => {
           <div className="bg-[#1e293b] rounded-2xl border border-[#334155] flex flex-col h-[750px]">
              <div className="p-4 border-b border-[#334155] bg-[#0f172a]/50">
                 <h3 className="font-bold uppercase tracking-wider text-sm flex items-center gap-2">
-                  <Activity className="w-4 h-4 text-brand-DEFAULT" /> Live AI Activity Feed
+                  <Activity className="w-4 h-4 text-brand" /> Live AI Activity Feed
                 </h3>
              </div>
              
@@ -159,7 +159,7 @@ const AdminDashboard = () => {
                   { time: '15:42:21', text: 'New ride request received', color: 'bg-blue-500' },
                   { time: '15:42:18', text: 'Route optimized — 8.4% detour', color: 'bg-purple-500' },
                   { time: '15:42:12', text: 'Cluster #108 completed', color: 'bg-green-500' },
-                  { time: '15:41:05', text: 'Dynamic reroute triggered for Driver #88', color: 'bg-brand-DEFAULT' },
+                  { time: '15:41:05', text: 'Dynamic reroute triggered for Driver #88', color: 'bg-brand' },
                   { time: '15:40:55', text: '2 riders clustered near BHEL', color: 'bg-green-500' },
                   { time: '15:39:20', text: 'Driver #12 went offline', color: 'bg-gray-500' },
                 ].map((log, i) => (

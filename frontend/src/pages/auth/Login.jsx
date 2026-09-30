@@ -29,7 +29,7 @@ const Login = () => {
   return (
     <div className="flex min-h-screen flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gray-50">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
-        <Navigation className="mx-auto h-10 w-10 text-brand-DEFAULT" />
+        <Navigation className="mx-auto h-10 w-10 text-brand" />
         <h2 className="mt-4 text-center text-3xl font-black tracking-tight text-gray-900">
           Welcome back
         </h2>
@@ -55,7 +55,7 @@ const Login = () => {
                   <input
                     type="text"
                     required
-                    className="block w-full rounded-xl border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-brand-DEFAULT sm:text-sm sm:leading-6 bg-gray-50"
+                    className="block w-full rounded-xl border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-brand sm:text-sm sm:leading-6 bg-gray-50"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                   />
@@ -68,7 +68,7 @@ const Login = () => {
                   <input
                     type="password"
                     required
-                    className="block w-full rounded-xl border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-brand-DEFAULT sm:text-sm sm:leading-6 bg-gray-50"
+                    className="block w-full rounded-xl border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-brand sm:text-sm sm:leading-6 bg-gray-50"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
@@ -80,7 +80,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex w-full justify-center rounded-xl bg-brand-DEFAULT px-3 py-3 text-sm font-bold text-white shadow-lg shadow-brand-DEFAULT/30 hover:bg-brand-dark hover:-translate-y-0.5 transition-all disabled:opacity-75 disabled:hover:translate-y-0 disabled:cursor-not-allowed"
+                className="flex w-full justify-center rounded-xl bg-brand px-3 py-3 text-sm font-bold text-white shadow-lg shadow-brand/30 hover:bg-brand-dark hover:-translate-y-0.5 transition-all disabled:opacity-75 disabled:hover:translate-y-0 disabled:cursor-not-allowed"
               >
                 {loading ? 'Signing in...' : 'Sign in'}
               </button>
@@ -89,7 +89,7 @@ const Login = () => {
 
           <p className="mt-6 text-center text-sm text-gray-500 font-medium">
             Don't have an account?{' '}
-            <Link to="/register" className="font-bold text-brand-DEFAULT hover:text-brand-dark transition-colors">
+            <Link to="/register" className="font-bold text-brand hover:text-brand-dark transition-colors">
               Register now
             </Link>
           </p>

@@ -48,7 +48,7 @@ const CommuterDashboard = () => {
            <>
              <div className="absolute top-1/2 left-1/4 w-4 h-4 rounded-full bg-black shadow-lg z-10 border-2 border-white"></div>
              <div className="absolute top-1/4 left-1/2 w-4 h-4 rounded-full bg-black shadow-lg z-10 border-2 border-white"></div>
-             <div className="absolute top-3/4 left-3/4 w-4 h-4 rounded-full bg-brand-DEFAULT shadow-[0_0_15px_rgba(16,185,129,0.5)] z-10 border-2 border-white animate-pulse"></div>
+             <div className="absolute top-3/4 left-3/4 w-4 h-4 rounded-full bg-brand shadow-[0_0_15px_rgba(16,185,129,0.5)] z-10 border-2 border-white animate-pulse"></div>
              <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 1 }}>
                 <path d="M 100 300 L 200 150 L 300 450" stroke="#10b981" strokeWidth="4" fill="none" />
              </svg>
@@ -81,7 +81,7 @@ const CommuterDashboard = () => {
               <div className="border-t border-gray-200 ml-7"></div>
               
               <div className="flex items-center gap-3 relative z-10">
-                <div className="w-4 h-4 rounded-sm bg-brand-DEFAULT flex-shrink-0"></div>
+                <div className="w-4 h-4 rounded-sm bg-brand flex-shrink-0"></div>
                 <input 
                   type="text" 
                   value={destination} 
@@ -115,11 +115,11 @@ const CommuterDashboard = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <button className="border-2 border-brand-DEFAULT bg-brand-50 rounded-2xl p-4 text-left relative overflow-hidden">
-                <div className="absolute top-0 right-0 bg-brand-DEFAULT text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg">RECOMMENDED</div>
+              <button className="border-2 border-brand bg-brand-50 rounded-2xl p-4 text-left relative overflow-hidden">
+                <div className="absolute top-0 right-0 bg-brand text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg">RECOMMENDED</div>
                 <div className="text-2xl mb-1">🚕</div>
                 <div className="font-bold text-gray-900">Shared Ride</div>
-                <div className="text-brand-DEFAULT font-black text-lg">₹35</div>
+                <div className="text-brand font-black text-lg">₹35</div>
                 <div className="text-xs text-gray-500 font-medium">4 min away</div>
               </button>
               <button className="border border-gray-200 bg-white hover:bg-gray-50 rounded-2xl p-4 text-left">
@@ -142,7 +142,7 @@ const CommuterDashboard = () => {
         {rideStatus === 'searching' && (
           <div className="bg-white rounded-t-3xl shadow-2xl p-8 text-center space-y-6">
              <div className="w-20 h-20 bg-brand-50 rounded-full mx-auto flex items-center justify-center">
-                <Search className="w-8 h-8 text-brand-DEFAULT animate-pulse" />
+                <Search className="w-8 h-8 text-brand animate-pulse" />
              </div>
              <div>
                <h2 className="text-2xl font-black text-gray-900 mb-2">Clustering with AI...</h2>
@@ -150,9 +150,9 @@ const CommuterDashboard = () => {
              </div>
              
              <div className="flex gap-2 justify-center pb-4">
-               <div className="w-2 h-2 rounded-full bg-brand-DEFAULT animate-bounce"></div>
-               <div className="w-2 h-2 rounded-full bg-brand-DEFAULT animate-bounce delay-100"></div>
-               <div className="w-2 h-2 rounded-full bg-brand-DEFAULT animate-bounce delay-200"></div>
+               <div className="w-2 h-2 rounded-full bg-brand animate-bounce"></div>
+               <div className="w-2 h-2 rounded-full bg-brand animate-bounce delay-100"></div>
+               <div className="w-2 h-2 rounded-full bg-brand animate-bounce delay-200"></div>
              </div>
           </div>
         )}
@@ -187,7 +187,7 @@ const CommuterDashboard = () => {
                <div>
                  <div className="text-xs text-gray-400 font-bold uppercase mb-1">Your Fare</div>
                  <div className="text-3xl font-black text-gray-900">₹38</div>
-                 <div className="text-xs text-brand-DEFAULT font-bold bg-brand-50 px-2 py-0.5 rounded mt-1 inline-block">Saved ₹42</div>
+                 <div className="text-xs text-brand font-bold bg-brand-50 px-2 py-0.5 rounded mt-1 inline-block">Saved ₹42</div>
                </div>
                <div className="text-right">
                  <div className="text-xs text-gray-400 font-bold uppercase mb-1">Other Pickups</div>
@@ -198,7 +198,7 @@ const CommuterDashboard = () => {
 
             <button 
               onClick={() => setRideStatus('idle')}
-              className="w-full bg-brand-DEFAULT text-white font-black text-lg py-4 rounded-xl hover:bg-brand-dark transition-colors shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+              className="w-full bg-brand text-white font-black text-lg py-4 rounded-xl hover:bg-brand-dark transition-colors shadow-[0_0_20px_rgba(16,185,129,0.3)]"
             >
               CALL DRIVER
             </button>

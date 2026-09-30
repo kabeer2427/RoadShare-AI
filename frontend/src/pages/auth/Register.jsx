@@ -52,6 +52,8 @@ const Register = () => {
     
     try {
       const payload = { ...formData, role };
+      if (!payload.email) delete payload.email;
+      
       if (role !== 'driver') {
         delete payload.license_number;
         delete payload.vehicle_number;
@@ -71,20 +73,20 @@ const Register = () => {
   return (
     <div className="flex min-h-screen flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gray-50">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
-        <Navigation className="mx-auto h-10 w-10 text-brand-DEFAULT" />
+        <Navigation className="mx-auto h-10 w-10 text-brand" />
         <h2 className="mt-4 text-center text-3xl font-black tracking-tight text-gray-900">
           Join MoveFlow
         </h2>
         
         <div className="mt-4 flex justify-center border-b border-gray-200">
           <button
-            className={`pb-3 px-6 text-sm font-bold ${role === 'commuter' ? 'border-b-2 border-brand-DEFAULT text-brand-DEFAULT' : 'text-gray-400 hover:text-gray-700'}`}
+            className={`pb-3 px-6 text-sm font-bold ${role === 'commuter' ? 'border-b-2 border-brand text-brand' : 'text-gray-400 hover:text-gray-700'}`}
             onClick={() => { setRole('commuter'); setStep(1); }}
           >
             Commuter
           </button>
           <button
-            className={`pb-3 px-6 text-sm font-bold ${role === 'driver' ? 'border-b-2 border-brand-DEFAULT text-brand-DEFAULT' : 'text-gray-400 hover:text-gray-700'}`}
+            className={`pb-3 px-6 text-sm font-bold ${role === 'driver' ? 'border-b-2 border-brand text-brand' : 'text-gray-400 hover:text-gray-700'}`}
             onClick={() => setRole('driver')}
           >
             Driver Partner
@@ -98,9 +100,9 @@ const Register = () => {
           {role === 'driver' && (
             <div className="flex items-center justify-between mb-8 relative">
               <div className="absolute left-0 top-1/2 w-full h-0.5 bg-gray-100 -z-10"></div>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step >= 1 ? 'bg-brand-DEFAULT text-white shadow-md shadow-brand-DEFAULT/30' : 'bg-gray-100 text-gray-400'}`}>1</div>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step >= 2 ? 'bg-brand-DEFAULT text-white shadow-md shadow-brand-DEFAULT/30' : 'bg-gray-100 text-gray-400'}`}>2</div>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step >= 3 ? 'bg-brand-DEFAULT text-white shadow-md shadow-brand-DEFAULT/30' : 'bg-gray-100 text-gray-400'}`}>3</div>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step >= 1 ? 'bg-brand text-white shadow-md shadow-brand/30' : 'bg-gray-100 text-gray-400'}`}>1</div>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step >= 2 ? 'bg-brand text-white shadow-md shadow-brand/30' : 'bg-gray-100 text-gray-400'}`}>2</div>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step >= 3 ? 'bg-brand text-white shadow-md shadow-brand/30' : 'bg-gray-100 text-gray-400'}`}>3</div>
             </div>
           )}
 
@@ -115,28 +117,28 @@ const Register = () => {
             {(step === 1 || role === 'commuter') && (
               <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-300">
                 <div className="flex items-center gap-2 mb-4">
-                  <User className="w-5 h-5 text-brand-DEFAULT" />
+                  <User className="w-5 h-5 text-brand" />
                   <h3 className="text-lg font-bold text-gray-900">Personal Details</h3>
                 </div>
 
                 <div>
                   <label className="block text-sm font-bold leading-6 text-gray-700">Full Name</label>
                   <div className="mt-2">
-                    <input type="text" name="name" required value={formData.name} onChange={handleChange} className="block w-full rounded-xl border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-brand-DEFAULT sm:text-sm sm:leading-6 bg-gray-50" />
+                    <input type="text" name="name" required value={formData.name} onChange={handleChange} className="block w-full rounded-xl border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-brand sm:text-sm sm:leading-6 bg-gray-50" />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-sm font-bold leading-6 text-gray-700">Phone Number</label>
                   <div className="mt-2">
-                    <input type="text" name="phone" required value={formData.phone} onChange={handleChange} className="block w-full rounded-xl border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-brand-DEFAULT sm:text-sm sm:leading-6 bg-gray-50" />
+                    <input type="text" name="phone" required value={formData.phone} onChange={handleChange} className="block w-full rounded-xl border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-brand sm:text-sm sm:leading-6 bg-gray-50" />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-sm font-bold leading-6 text-gray-700">Password</label>
                   <div className="mt-2">
-                    <input type="password" name="password" required minLength="6" value={formData.password} onChange={handleChange} className="block w-full rounded-xl border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-brand-DEFAULT sm:text-sm sm:leading-6 bg-gray-50" />
+                    <input type="password" name="password" required minLength="6" value={formData.password} onChange={handleChange} className="block w-full rounded-xl border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-brand sm:text-sm sm:leading-6 bg-gray-50" />
                   </div>
                 </div>
               </div>
@@ -146,28 +148,28 @@ const Register = () => {
             {role === 'driver' && step === 2 && (
               <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-300">
                 <div className="flex items-center gap-2 mb-4">
-                  <Car className="w-5 h-5 text-brand-DEFAULT" />
+                  <Car className="w-5 h-5 text-brand" />
                   <h3 className="text-lg font-bold text-gray-900">Vehicle Information</h3>
                 </div>
                 
                 <div>
                   <label className="block text-sm font-bold leading-6 text-gray-700">License Number</label>
                   <div className="mt-2">
-                    <input type="text" name="license_number" required value={formData.license_number} onChange={handleChange} className="block w-full rounded-xl border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-brand-DEFAULT sm:text-sm sm:leading-6 bg-gray-50 uppercase" />
+                    <input type="text" name="license_number" required value={formData.license_number} onChange={handleChange} className="block w-full rounded-xl border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-brand sm:text-sm sm:leading-6 bg-gray-50 uppercase" />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-sm font-bold leading-6 text-gray-700">Vehicle Number</label>
                   <div className="mt-2">
-                    <input type="text" name="vehicle_number" required value={formData.vehicle_number} onChange={handleChange} className="block w-full rounded-xl border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-brand-DEFAULT sm:text-sm sm:leading-6 bg-gray-50 uppercase" />
+                    <input type="text" name="vehicle_number" required value={formData.vehicle_number} onChange={handleChange} className="block w-full rounded-xl border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-brand sm:text-sm sm:leading-6 bg-gray-50 uppercase" />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-bold leading-6 text-gray-700">Type</label>
-                    <select name="vehicle_type" value={formData.vehicle_type} onChange={handleChange} className="mt-2 block w-full rounded-xl border-0 py-2.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-brand-DEFAULT sm:text-sm sm:leading-6 bg-gray-50">
+                    <select name="vehicle_type" value={formData.vehicle_type} onChange={handleChange} className="mt-2 block w-full rounded-xl border-0 py-2.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-brand sm:text-sm sm:leading-6 bg-gray-50">
                       <option value="e_rickshaw">🛺 E-Rickshaw</option>
                       <option value="auto">🚕 Auto</option>
                       <option value="shared_auto">🚐 Shared Auto</option>
@@ -176,7 +178,7 @@ const Register = () => {
                   <div>
                     <label className="block text-sm font-bold leading-6 text-gray-700">Capacity</label>
                     <div className="mt-2">
-                      <input type="number" name="vehicle_capacity" min="1" max="10" required value={formData.vehicle_capacity} onChange={handleChange} className="block w-full rounded-xl border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-brand-DEFAULT sm:text-sm sm:leading-6 bg-gray-50" />
+                      <input type="number" name="vehicle_capacity" min="1" max="10" required value={formData.vehicle_capacity} onChange={handleChange} className="block w-full rounded-xl border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-brand sm:text-sm sm:leading-6 bg-gray-50" />
                     </div>
                   </div>
                 </div>
@@ -187,7 +189,7 @@ const Register = () => {
             {role === 'driver' && step === 3 && (
               <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-300">
                 <div className="flex items-center gap-2 mb-4">
-                  <FileCheck className="w-5 h-5 text-brand-DEFAULT" />
+                  <FileCheck className="w-5 h-5 text-brand" />
                   <h3 className="text-lg font-bold text-gray-900">Verification</h3>
                 </div>
 
@@ -197,7 +199,7 @@ const Register = () => {
                 </div>
 
                 <label className="flex items-start gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors">
-                  <input type="checkbox" required className="mt-1 w-4 h-4 text-brand-DEFAULT border-gray-300 rounded focus:ring-brand-DEFAULT" />
+                  <input type="checkbox" required className="mt-1 w-4 h-4 text-brand border-gray-300 rounded focus:ring-brand" />
                   <span className="text-sm text-gray-600 font-medium">I confirm all details are accurate and I agree to the MoveFlow Driver terms of service.</span>
                 </label>
               </div>
@@ -216,7 +218,7 @@ const Register = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className={`flex justify-center rounded-xl bg-brand-DEFAULT px-3 py-3 text-sm font-bold text-white shadow-lg shadow-brand-DEFAULT/30 hover:bg-brand-dark hover:-translate-y-0.5 transition-all disabled:opacity-50 ${role === 'driver' && step > 1 ? 'flex-[2]' : 'w-full'}`}
+                className={`flex justify-center rounded-xl bg-brand px-3 py-3 text-sm font-bold text-white shadow-lg shadow-brand/30 hover:bg-brand-dark hover:-translate-y-0.5 transition-all disabled:opacity-50 ${role === 'driver' && step > 1 ? 'flex-[2]' : 'w-full'}`}
               >
                 {loading ? 'Processing...' : (role === 'driver' && step < 3 ? 'Continue →' : 'Complete Registration')}
               </button>
@@ -225,7 +227,7 @@ const Register = () => {
 
           <p className="mt-6 text-center text-sm text-gray-500 font-medium">
             Already have an account?{' '}
-            <Link to="/login" className="font-bold text-brand-DEFAULT hover:text-brand-dark transition-colors">
+            <Link to="/login" className="font-bold text-brand hover:text-brand-dark transition-colors">
               Log in
             </Link>
           </p>

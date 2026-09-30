@@ -19,7 +19,7 @@ const Navbar = () => {
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
               <Link to="/" className="flex items-center gap-2 group">
-                <div className="bg-brand-DEFAULT p-1.5 rounded-lg group-hover:bg-brand-dark transition-colors">
+                <div className="bg-brand p-1.5 rounded-lg group-hover:bg-brand-dark transition-colors">
                   <Navigation className="h-6 w-6 text-white transform -rotate-45" />
                 </div>
                 <span className="font-black text-xl text-gray-900 tracking-tight">MoveFlow</span>
@@ -36,12 +36,12 @@ const Navbar = () => {
             {user ? (
               <div className="flex items-center gap-4">
                 <div className="hidden md:flex items-center gap-2 text-sm text-gray-700 bg-gray-50 px-3 py-1.5 rounded-full border border-gray-100">
-                  <User className="h-4 w-4 text-brand-DEFAULT" />
+                  <User className="h-4 w-4 text-brand" />
                   <span className="font-bold">{user.name}</span>
                   <span className="text-[10px] bg-white px-2 py-0.5 rounded-full uppercase tracking-wider font-bold text-gray-500 border border-gray-200">{user.role}</span>
                 </div>
                 
-                <Link to={`/${user.role}`} className="text-sm font-bold text-brand-DEFAULT hover:text-brand-dark transition-colors px-3 py-2">
+                <Link to={`/${user.role}`} className="text-sm font-bold text-brand hover:text-brand-dark transition-colors px-3 py-2">
                   Dashboard
                 </Link>
 
@@ -58,7 +58,7 @@ const Navbar = () => {
                 <Link to="/login" className="text-gray-600 hover:text-gray-900 font-bold text-sm transition-colors">
                   Log in
                 </Link>
-                <Link to="/register" className="inline-flex items-center px-5 py-2.5 border border-transparent text-sm font-bold rounded-xl shadow-sm text-white bg-brand-DEFAULT hover:bg-brand-dark hover:shadow-md hover:-translate-y-0.5 focus:outline-none transition-all">
+                <Link to="/register" className="inline-flex items-center px-5 py-2.5 border border-transparent text-sm font-bold rounded-xl shadow-sm text-white bg-brand hover:bg-brand-dark hover:shadow-md hover:-translate-y-0.5 focus:outline-none transition-all">
                   Get Started
                 </Link>
               </div>
