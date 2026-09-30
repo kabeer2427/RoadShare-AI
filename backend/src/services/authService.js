@@ -1,10 +1,17 @@
 import { supabase } from '../config/database.js';
+import { createClient } from '@supabase/supabase-js';
+import { config } from '../config/env.js';
 import * as profileRepo from '../repositories/profileRepository.js';
 
 export const registerUser = async (userData) => {
+  // Use a transient client for auth to prevent mutating the global service_role client's session
+  const transientSupabase = createClient(config.supabaseUrl, config.supabaseAnonKey, {
+    auth: { autoRefreshToken: false, persistSession: false }
+  });
+
   // 1. Create user in Supabase Auth
-  const { data: authData, error: authError } = await supabase.auth.signUp({
-    email: userData.email, // using email as primary identifier for auth
+  const { data: authData, error: authError } = await transientSupabase.auth.signUp({
+    email: userData.email,
     password: userData.password,
     options: {
       data: {
@@ -20,7 +27,7 @@ export const registerUser = async (userData) => {
     throw error;
   }
 
-  // 2. Create Profile in our public schema
+  // 2. Create Profile in our public schema using the global service_role client
   const profilePayload = {
     id: authData.user.id,
     name: userData.name,
@@ -55,7 +62,11 @@ export const registerUser = async (userData) => {
 };
 
 export const loginUser = async ({ email, password }) => {
-  const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+  const transientSupabase = createClient(config.supabaseUrl, config.supabaseAnonKey, {
+    auth: { autoRefreshToken: false, persistSession: false }
+  });
+
+  const { data: authData, error: authError } = await transientSupabase.auth.signInWithPassword({
     email,
     password,
   });
