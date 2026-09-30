@@ -21,15 +21,22 @@ export const getDashboardStats = async (req, res, next) => {
 export const getRideHistory = async (req, res, next) => {
   try {
     const profileId = req.user.id;
+    const role = req.user.role;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
 
-    const driver = await driverRepository.getDriverByProfileId(profileId);
-    if (!driver) {
-      return res.status(404).json({ success: false, message: 'Driver profile not found' });
+    let history;
+
+    if (role === 'driver') {
+      const driver = await driverRepository.getDriverByProfileId(profileId);
+      if (!driver) {
+        return res.status(404).json({ success: false, message: 'Driver profile not found' });
+      }
+      history = await rideService.getRideHistory({ driverId: driver.id }, page, limit);
+    } else {
+      history = await rideService.getRideHistory({ commuterId: profileId }, page, limit);
     }
 
-    const history = await rideService.getDriverRideHistory(driver.id, page, limit);
     res.json({ success: true, data: history });
   } catch (error) {
     next(error);
@@ -91,15 +98,19 @@ export const declineRideRequest = async (req, res, next) => {
 export const createRideRequest = async (req, res, next) => {
   try {
     const profileId = req.user.id;
-    const { pickup_lat, pickup_lng, destination_lat, destination_lng, passenger_count } = req.body;
+    const { pickup_lat, pickup_lng, pickup_address, destination_lat, destination_lng, destination_address, passenger_count, estimated_fare, ride_type } = req.body;
     
     // We can assume profile is valid because of auth middleware
     const requestData = {
       pickup_lat,
       pickup_lng,
+      pickup_address,
       destination_lat,
       destination_lng,
+      destination_address,
       passenger_count,
+      estimated_fare,
+      ride_type,
       status: 'pending',
       requested_at: new Date()
     };

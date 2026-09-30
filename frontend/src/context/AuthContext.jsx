@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [user]);
+  }, []);
 
   const login = async (credentials) => {
     // We maintain MVC by calling our backend API

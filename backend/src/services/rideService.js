@@ -57,14 +57,21 @@ export const getDriverDashboardStats = async (driverId) => {
   };
 };
 
-export const getDriverRideHistory = async (driverId, page = 1, limit = 10) => {
+export const getRideHistory = async (filters, page = 1, limit = 10) => {
   const offset = (page - 1) * limit;
 
-  const { data: rides, error, count } = await supabase
+  let query = supabase
     .from('ride_requests')
-    .select('*', { count: 'exact' })
-    .eq('assigned_driver_id', driverId)
-    .in('status', ['completed', 'cancelled'])
+    .select('*, driver:drivers(profiles(name, phone))', { count: 'exact' });
+
+  if (filters.driverId) {
+    query = query.eq('assigned_driver_id', filters.driverId);
+  }
+  if (filters.commuterId) {
+    query = query.eq('commuter_id', filters.commuterId);
+  }
+
+  const { data: rides, error, count } = await query
     .order('requested_at', { ascending: false })
     .range(offset, offset + limit - 1);
 
@@ -76,7 +83,7 @@ export const getDriverRideHistory = async (driverId, page = 1, limit = 10) => {
     return {
       ...ride,
       distance: parseFloat(distance.toFixed(2)),
-      fare: calculateFare(distance, ride.passenger_count || 1)
+      fare: ride.estimated_fare || calculateFare(distance, ride.passenger_count || 1)
     };
   });
 
@@ -150,10 +157,17 @@ export const createRideRequest = async (profileId, requestData) => {
       {
         pickup_lat: requestData.pickup_lat,
         pickup_lng: requestData.pickup_lng,
+        pickup_location: `POINT(${requestData.pickup_lng} ${requestData.pickup_lat})`,
+        pickup_address: requestData.pickup_address,
         destination_lat: requestData.destination_lat,
         destination_lng: requestData.destination_lng,
+        destination_location: `POINT(${requestData.destination_lng} ${requestData.destination_lat})`,
+        destination_address: requestData.destination_address,
         passenger_count: requestData.passenger_count || 1,
+        estimated_fare: requestData.estimated_fare,
+        ride_type: requestData.ride_type,
         status: requestData.status,
+        commuter_id: profileId,
         requested_at: requestData.requested_at
       }
     ])
