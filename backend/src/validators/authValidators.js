@@ -5,7 +5,7 @@ export const registerSchema = z.object({
   phone: z.string().min(10, 'Valid phone number required'),
   email: z.string().email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
-  role: z.enum(['driver', 'admin']).default('driver'),
+  role: z.enum(['driver', 'admin', 'commuter', 'passenger']).default('driver'),
   // Driver specific optional fields
   license_number: z.string().optional(),
   vehicle_number: z.string().optional(),
