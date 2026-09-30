@@ -20,7 +20,7 @@ export const requireAuth = async (req, res, next) => {
     // Attach to request
     req.user = {
       id: user.id,
-      role: user.user_metadata?.role || 'commuter',
+      role: user.user_metadata?.role || 'driver',
       email: user.email
     };
     

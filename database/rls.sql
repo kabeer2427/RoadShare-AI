@@ -42,14 +42,7 @@ CREATE POLICY "Drivers can update their own status" ON drivers
     FOR UPDATE USING (profile_id::text = current_setting('request.jwt.claim.sub', true));
 
 -- RIDE REQUESTS
-CREATE POLICY "Commuters can view their own ride requests" ON ride_requests
-    FOR SELECT USING (commuter_id::text = current_setting('request.jwt.claim.sub', true));
-
-CREATE POLICY "Commuters can insert own ride requests" ON ride_requests
-    FOR INSERT WITH CHECK (commuter_id::text = current_setting('request.jwt.claim.sub', true));
-
-CREATE POLICY "Commuters can update their own ride requests" ON ride_requests
-    FOR UPDATE USING (commuter_id::text = current_setting('request.jwt.claim.sub', true));
+-- Commuter policies removed in driver-first migration
     
 CREATE POLICY "Drivers can view assigned ride requests" ON ride_requests
     FOR SELECT USING (assigned_driver_id IN (SELECT id FROM drivers WHERE profile_id::text = current_setting('request.jwt.claim.sub', true)));

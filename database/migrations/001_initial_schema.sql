@@ -4,7 +4,7 @@ CREATE EXTENSION IF NOT EXISTS postgis;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Create ENUM types
-CREATE TYPE user_role AS ENUM ('commuter', 'driver', 'admin');
+CREATE TYPE user_role AS ENUM ('driver', 'admin');
 CREATE TYPE vehicle_type_enum AS ENUM ('e_rickshaw', 'auto', 'shared_auto', 'taxi');
 CREATE TYPE ride_status_enum AS ENUM ('pending', 'clustered', 'matched', 'accepted', 'pickup', 'in_progress', 'completed', 'cancelled', 'expired');
 
@@ -15,7 +15,7 @@ CREATE TABLE profiles (
     phone TEXT UNIQUE NOT NULL,
     email TEXT UNIQUE,
     password_hash TEXT NOT NULL,
-    role user_role DEFAULT 'commuter'::user_role NOT NULL,
+    role user_role DEFAULT 'driver'::user_role NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -60,7 +60,7 @@ CREATE TABLE ride_clusters (
 -- 5. ride_requests table
 CREATE TABLE ride_requests (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    commuter_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
+    -- Commuter is removed in driver-first migration
     pickup_location GEOGRAPHY(Point, 4326) NOT NULL,
     destination_location GEOGRAPHY(Point, 4326) NOT NULL,
     pickup_lat FLOAT NOT NULL,
