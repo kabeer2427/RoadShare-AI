@@ -1,33 +1,37 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { config } from '../config/env.js';
+import { supabase } from '../config/database.js';
 import * as profileRepo from '../repositories/profileRepository.js';
 
 export const registerUser = async (userData) => {
-  // Check if user exists
-  const existingUser = await profileRepo.findProfileByPhone(userData.phone);
-  if (existingUser) {
-    const error = new Error('User with this phone number already exists');
-    error.statusCode = 409;
-    error.code = 'CONFLICT';
+  // 1. Create user in Supabase Auth
+  const { data: authData, error: authError } = await supabase.auth.signUp({
+    email: userData.email, // using email as primary identifier for auth
+    password: userData.password,
+    options: {
+      data: {
+        name: userData.name,
+        role: userData.role
+      }
+    }
+  });
+
+  if (authError) {
+    const error = new Error(authError.message);
+    error.statusCode = authError.status || 400;
     throw error;
   }
 
-  // Hash password
-  const password_hash = await bcrypt.hash(userData.password, config.bcryptRounds);
-
-  // Create Profile
+  // 2. Create Profile in our public schema
   const profilePayload = {
+    id: authData.user.id,
     name: userData.name,
     phone: userData.phone,
     email: userData.email,
-    password_hash,
     role: userData.role,
   };
 
   const profile = await profileRepo.createProfile(profilePayload);
 
-  // If driver, create vehicle and driver records
+  // 3. If driver, create vehicle and driver records
   if (userData.role === 'driver') {
     const vehiclePayload = {
       driver_id: profile.id,
@@ -43,36 +47,69 @@ export const registerUser = async (userData) => {
     await profileRepo.createDriver(driverPayload, vehiclePayload);
   }
 
-  return generateSession(profile);
-};
-
-export const loginUser = async ({ phone, password }) => {
-  const profile = await profileRepo.findProfileByPhone(phone);
-  if (!profile) {
-    const error = new Error('Invalid credentials');
-    error.statusCode = 401;
-    throw error;
-  }
-
-  const isMatch = await bcrypt.compare(password, profile.password_hash);
-  if (!isMatch) {
-    const error = new Error('Invalid credentials');
-    error.statusCode = 401;
-    throw error;
-  }
-
-  return generateSession(profile);
-};
-
-const generateSession = (profile) => {
-  const payload = {
-    id: profile.id,
-    role: profile.role,
-    sub: profile.id // required for our custom Supabase RLS policies
+  // Return session info (if email confirmation is off, session exists)
+  return {
+    user: profile,
+    session: authData.session
   };
+};
+
+export const loginUser = async ({ email, password }) => {
+  const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (authError) {
+    const error = new Error(authError.message);
+    error.statusCode = 401;
+    throw error;
+  }
+
+  // Fetch the custom profile data
+  const { data: profile, error: profileError } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', authData.user.id)
+    .single();
+
+  if (profileError) {
+    const error = new Error('Profile not found');
+    error.statusCode = 404;
+    throw error;
+  }
+
+  return {
+    user: profile,
+    session: authData.session
+  };
+};
+
+export const logoutUser = async (token) => {
+  // To sign out globally if needed, though usually just dropping the token client-side is enough for stateless APIs
+  // If we had the user's specific JWT, we could call admin.signOut(jwt)
+  return { success: true };
+};
+
+export const requestPasswordReset = async (email) => {
+  const { error } = await supabase.auth.resetPasswordForEmail(email);
+  return { error };
+};
+
+export const resetPassword = async (email, token, newPassword) => {
+  // Verify OTP and set new password in one step using supabase auth verifyOtp
+  const { error } = await supabase.auth.verifyOtp({
+    email,
+    token,
+    type: 'recovery',
+  });
   
-  const token = jwt.sign(payload, config.jwtSecret, { expiresIn: '7d' });
+  if (error) return { error };
   
-  const { password_hash, ...safeProfile } = profile;
-  return { user: safeProfile, token };
+  // If verification is successful, we can update the user's password
+  const { error: updateError } = await supabase.auth.updateUser({
+    password: newPassword
+  });
+  
+  return { error: updateError };
 };

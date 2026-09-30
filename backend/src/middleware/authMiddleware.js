@@ -1,5 +1,4 @@
-import jwt from 'jsonwebtoken';
-import { config } from '../config/env.js';
+import { supabase } from '../config/database.js';
 import * as profileRepo from '../repositories/profileRepository.js';
 
 export const requireAuth = async (req, res, next) => {
@@ -10,10 +9,21 @@ export const requireAuth = async (req, res, next) => {
     }
 
     const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, config.jwtSecret);
     
+    // Validate JWT natively via Supabase
+    const { data: { user }, error } = await supabase.auth.getUser(token);
+    
+    if (error || !user) {
+      throw new Error('Invalid token');
+    }
+
     // Attach to request
-    req.user = decoded;
+    req.user = {
+      id: user.id,
+      role: user.user_metadata?.role || 'commuter',
+      email: user.email
+    };
+    
     next();
   } catch (error) {
     res.status(401).json({
