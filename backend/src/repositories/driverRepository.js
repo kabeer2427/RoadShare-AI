@@ -52,6 +52,23 @@ export const getDriverByProfileId = async (profileId) => {
     .single();
 
   if (error && error.code !== 'PGRST116') throw error;
+  
+  if (!data) {
+    // Auto-create driver record for smooth UX if it doesn't exist
+    const mockLicense = `DL-${Math.floor(Math.random() * 1000000)}`;
+    const { data: newDriver, error: insertError } = await supabase
+      .from('drivers')
+      .insert([{ profile_id: profileId, license_number: mockLicense, capacity: 4 }])
+      .select()
+      .single();
+      
+    if (insertError) {
+       console.error("Failed to auto-create driver:", insertError);
+       return null;
+    }
+    return newDriver;
+  }
+  
   return data;
 };
 
