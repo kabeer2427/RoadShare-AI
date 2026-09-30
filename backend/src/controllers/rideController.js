@@ -87,3 +87,26 @@ export const declineRideRequest = async (req, res, next) => {
     next(error);
   }
 };
+
+export const createRideRequest = async (req, res, next) => {
+  try {
+    const profileId = req.user.id;
+    const { pickup_lat, pickup_lng, destination_lat, destination_lng, passenger_count } = req.body;
+    
+    // We can assume profile is valid because of auth middleware
+    const requestData = {
+      pickup_lat,
+      pickup_lng,
+      destination_lat,
+      destination_lng,
+      passenger_count,
+      status: 'pending',
+      requested_at: new Date()
+    };
+    
+    const newRequest = await rideService.createRideRequest(profileId, requestData);
+    res.status(201).json({ success: true, data: newRequest, message: 'Ride requested successfully' });
+  } catch (error) {
+    next(error);
+  }
+};

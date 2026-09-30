@@ -142,3 +142,24 @@ export const updateRideRequestStatus = async (driverId, requestId, status) => {
   if (error) throw error;
   return data;
 };
+
+export const createRideRequest = async (profileId, requestData) => {
+  const { data, error } = await supabase
+    .from('ride_requests')
+    .insert([
+      {
+        pickup_lat: requestData.pickup_lat,
+        pickup_lng: requestData.pickup_lng,
+        destination_lat: requestData.destination_lat,
+        destination_lng: requestData.destination_lng,
+        passenger_count: requestData.passenger_count || 1,
+        status: requestData.status,
+        requested_at: requestData.requested_at
+      }
+    ])
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+};

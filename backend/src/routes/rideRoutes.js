@@ -6,17 +6,19 @@ const router = Router();
 
 // Apply auth middleware to all routes in this file
 router.use(requireAuth);
-router.use(requireRole(['driver']));
 
-// Dashboard and Stats
-router.get('/dashboard-stats', rideController.getDashboardStats);
+// Dashboard and Stats (Driver only)
+router.get('/dashboard-stats', requireRole(['driver']), rideController.getDashboardStats);
 
 // History
-router.get('/history', rideController.getRideHistory);
+router.get('/history', requireRole(['driver', 'commuter', 'passenger']), rideController.getRideHistory);
 
 // Active Requests
-router.get('/requests', rideController.getActiveRequests);
-router.post('/requests/:id/accept', rideController.acceptRideRequest);
-router.post('/requests/:id/decline', rideController.declineRideRequest);
+router.get('/requests', requireRole(['driver']), rideController.getActiveRequests);
+router.post('/requests/:id/accept', requireRole(['driver']), rideController.acceptRideRequest);
+router.post('/requests/:id/decline', requireRole(['driver']), rideController.declineRideRequest);
+
+// Passenger Request
+router.post('/requests', requireRole(['commuter', 'passenger']), rideController.createRideRequest);
 
 export default router;

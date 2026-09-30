@@ -12,7 +12,7 @@ const CommuterDashboard = () => {
   const handleBookRide = async () => {
     setLoading(true);
     try {
-      // In a real app, these would come from the Map/Search inputs
+      // In a real app, these would come from the Map/Search inputs. We will hardcode Bhopal coordinates for MVP.
       const payload = {
         pickup_lat: 23.2599,
         pickup_lng: 77.4126,
@@ -21,14 +21,15 @@ const CommuterDashboard = () => {
         passenger_count: 1
       };
       
-      // We don't have a commuter ride creation endpoint yet, but this is a placeholder
-      // For now we just mock a success state
-      setTimeout(() => {
+      const res = await apiClient.post('/rides/requests', payload);
+      
+      if (res.data?.success) {
         setRequested(true);
-        setLoading(false);
-      }, 1500);
+      }
     } catch (e) {
       console.error(e);
+      alert('Failed to request ride.');
+    } finally {
       setLoading(false);
     }
   };
