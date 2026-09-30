@@ -25,9 +25,9 @@ const DriverDashboard = () => {
             detour_distance: 7.8,
             estimated_duration: 24,
             passengers: [
-              { id: 'A', distance: 0.8 },
-              { id: 'B', distance: 1.2 },
-              { id: 'C', distance: 1.6 }
+              { id: 'A', distance: 0.8, name: 'Aditi', location: 'MP Nagar' },
+              { id: 'B', distance: 1.2, name: 'Rahul', location: 'Habibganj' },
+              { id: 'C', distance: 1.6, name: 'Sneha', location: 'BHEL' }
             ],
             confidence: 87
           });
@@ -268,8 +268,8 @@ const DriverDashboard = () => {
                         )}
                       </div>
                       <div>
-                        <div className="font-black text-lg">{p.name}</div>
-                        <div className="text-gray-900/70 font-medium">📍 {p.location}</div>
+                        <div className="font-black text-lg">{p.name || `Passenger ${p.id}`}</div>
+                        <div className="text-gray-900/70 font-medium">📍 {p.location || 'Location Pending'}</div>
                       </div>
                     </div>
                   ))}
