@@ -18,7 +18,7 @@ const Navbar = () => {
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <Link to={user ? "/driver" : "/"} className="flex items-center gap-2 group">
+              <Link to={user ? (user.role === 'driver' ? "/driver" : "/commuter") : "/"} className="flex items-center gap-2 group">
                 <div className="bg-brand p-1.5 rounded-lg group-hover:bg-brand-dark transition-colors">
                   <Navigation className="h-6 w-6 text-white transform -rotate-45" />
                 </div>
@@ -27,12 +27,21 @@ const Navbar = () => {
             </div>
             
             {/* Desktop Navigation for Drivers */}
-            {user && (
+            {user && user.role === 'driver' && (
               <div className="hidden md:ml-10 md:flex md:space-x-8 items-center">
                 <Link to="/driver" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">Dashboard</Link>
                 <Link to="/live-map" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500 animate-pulse inline-block"></span> Live Map</Link>
                 <Link to="/driver/requests" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">Requests</Link>
                 <Link to="/driver/rides" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">Rides</Link>
+              </div>
+            )}
+            
+            {/* Desktop Navigation for Commuters */}
+            {user && (user.role === 'commuter' || user.role === 'passenger') && (
+              <div className="hidden md:ml-10 md:flex md:space-x-8 items-center">
+                <Link to="/commuter" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">Book a Ride</Link>
+                <Link to="/live-map" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">Live Map</Link>
+                <Link to="/commuter/rides" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">My Rides</Link>
               </div>
             )}
             
@@ -49,8 +58,8 @@ const Navbar = () => {
               <div className="flex items-center gap-4">
                 <div className="hidden md:flex items-center gap-2 text-sm text-gray-700 bg-gray-50 px-3 py-1.5 rounded-full border border-gray-100">
                   <User className="h-4 w-4 text-brand" />
-                  <Link to="/driver/profile" className="font-bold hover:text-brand transition-colors">{user.name}</Link>
-                  <span className="text-[10px] bg-white px-2 py-0.5 rounded-full uppercase tracking-wider font-bold text-gray-500 border border-gray-200">Driver</span>
+                  <Link to={user.role === 'driver' ? "/driver/profile" : "/commuter/profile"} className="font-bold hover:text-brand transition-colors">{user.name}</Link>
+                  <span className="text-[10px] bg-white px-2 py-0.5 rounded-full uppercase tracking-wider font-bold text-gray-500 border border-gray-200">{user.role}</span>
                 </div>
 
                 <button
@@ -64,10 +73,10 @@ const Navbar = () => {
             ) : (
               <div className="flex items-center gap-4">
                 <Link to="/login" className="text-gray-600 hover:text-gray-900 font-bold text-sm transition-colors">
-                  Driver Login
+                  Login
                 </Link>
                 <Link to="/register" className="inline-flex items-center px-5 py-2.5 border border-transparent text-sm font-bold rounded-xl shadow-sm text-white bg-brand hover:bg-brand-dark hover:shadow-md hover:-translate-y-0.5 focus:outline-none transition-all">
-                  Drive & Earn
+                  Sign Up
                 </Link>
               </div>
             )}

@@ -6,6 +6,7 @@ import { Navigation } from 'lucide-react';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('driver'); // visual toggle for UX
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
@@ -52,6 +53,22 @@ const Login = () => {
                 <span className="font-bold">Error:</span> {error}
               </div>
             )}
+            <div className="flex bg-gray-100 p-1 rounded-xl mb-6">
+              <button
+                type="button"
+                onClick={() => setRole('commuter')}
+                className={`flex-1 py-2 text-sm font-bold rounded-lg transition-colors ${role === 'commuter' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500'}`}
+              >
+                Passenger
+              </button>
+              <button
+                type="button"
+                onClick={() => setRole('driver')}
+                className={`flex-1 py-2 text-sm font-bold rounded-lg transition-colors ${role === 'driver' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500'}`}
+              >
+                Driver
+              </button>
+            </div>
             
             <div className="space-y-5">
               <div>
