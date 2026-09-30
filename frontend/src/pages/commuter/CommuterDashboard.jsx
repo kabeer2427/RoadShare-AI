@@ -11,11 +11,28 @@ const CommuterDashboard = () => {
   const [pax, setPax] = useState(1);
   const [rideStatus, setRideStatus] = useState('idle'); // idle, searching, found
   
-  // Navigation State
+  // Navigation & Ride Options State
   const [activeTab, setActiveTab] = useState('book'); // book, map, rides
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedRide, setSelectedRide] = useState(null); // For Ride Details view
   const [rideHistoryTab, setRideHistoryTab] = useState('completed');
+  const [selectedRideType, setSelectedRideType] = useState('shared'); // shared, direct
+
+  // Fare Configuration
+  const FARE_CONFIG = {
+    shared: { baseFare: 35, additionalPassengerFare: 10 },
+    direct: { baseFare: 80, additionalPassengerFare: 15 }
+  };
+
+  // Dynamic Fare Calculation
+  const calculateFare = (type, count) => {
+    const config = FARE_CONFIG[type];
+    return config.baseFare + ((count - 1) * config.additionalPassengerFare);
+  };
+
+  const sharedFare = calculateFare('shared', pax);
+  const directFare = calculateFare('direct', pax);
+  const finalFare = selectedRideType === 'shared' ? sharedFare : directFare;
 
   const requestRide = async () => {
     if (!pickup || !destination) return;
@@ -304,26 +321,41 @@ const CommuterDashboard = () => {
                       </div>
 
                       <div className="grid grid-cols-2 gap-3 mb-4">
-                        <button className="border-2 border-brand bg-brand-50 rounded-2xl p-4 text-left relative overflow-hidden">
+                        <button 
+                          onClick={() => setSelectedRideType('shared')}
+                          className={`border-2 rounded-2xl p-4 text-left relative overflow-hidden transition-colors ${
+                            selectedRideType === 'shared' ? 'border-brand bg-brand-50' : 'border-gray-200 bg-white hover:bg-gray-50'
+                          }`}
+                        >
                           <div className="absolute top-0 right-0 bg-brand text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg">RECOMMENDED</div>
                           <div className="text-2xl mb-1">🚕</div>
                           <div className="font-bold text-gray-900">Shared Ride</div>
-                          <div className="text-brand font-black text-lg">₹35</div>
-                          <div className="text-xs text-gray-500 font-medium">4 min away</div>
+                          <div className="text-brand font-black text-lg">₹{sharedFare} <span className="text-xs text-gray-500 font-medium">total</span></div>
+                          <div className="text-xs text-gray-500 font-medium mt-1">4 min away</div>
+                          {selectedRideType === 'shared' && <div className="absolute bottom-2 right-2 text-brand text-xs font-bold">✓</div>}
                         </button>
-                        <button className="border border-gray-200 bg-white hover:bg-gray-50 rounded-2xl p-4 text-left">
+                        <button 
+                          onClick={() => setSelectedRideType('direct')}
+                          className={`border-2 rounded-2xl p-4 text-left relative transition-colors ${
+                            selectedRideType === 'direct' ? 'border-brand bg-brand-50' : 'border-gray-200 bg-white hover:bg-gray-50'
+                          }`}
+                        >
                           <div className="text-2xl mb-1">🚖</div>
                           <div className="font-bold text-gray-900">Direct Auto</div>
-                          <div className="text-gray-900 font-black text-lg">₹80</div>
-                          <div className="text-xs text-gray-500 font-medium">2 min away</div>
+                          <div className="text-gray-900 font-black text-lg">₹{directFare} <span className="text-xs text-gray-500 font-medium">total</span></div>
+                          <div className="text-xs text-gray-500 font-medium mt-1">2 min away</div>
+                          {selectedRideType === 'direct' && <div className="absolute bottom-2 right-2 text-brand text-xs font-bold">✓</div>}
                         </button>
                       </div>
 
                       <button 
                         onClick={requestRide}
-                        className="w-full bg-gray-900 text-white font-black text-lg py-4 rounded-xl hover:bg-black transition-colors"
+                        disabled={loading}
+                        className={`w-full text-white font-black text-lg py-4 rounded-xl transition-colors ${
+                          loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-gray-900 hover:bg-black'
+                        }`}
                       >
-                        FIND RIDE
+                        {loading ? 'FINDING RIDE...' : `FIND RIDE (₹${finalFare})`}
                       </button>
                     </>
                   )}
@@ -392,8 +424,8 @@ const CommuterDashboard = () => {
                   <div className="flex items-center justify-between mb-6 border-b border-gray-100 pb-6">
                      <div>
                        <div className="text-xs text-gray-400 font-bold uppercase mb-1">Your Fare</div>
-                       <div className="text-3xl font-black text-gray-900">₹38</div>
-                       <div className="text-xs text-brand font-bold bg-brand-50 px-2 py-0.5 rounded mt-1 inline-block">Saved ₹42</div>
+                       <div className="text-3xl font-black text-gray-900">₹{finalFare}</div>
+                       <div className="text-xs text-brand font-bold bg-brand-50 px-2 py-0.5 rounded mt-1 inline-block">Saved ₹{Math.round(finalFare * 1.2)}</div>
                      </div>
                      <div className="text-right">
                        <div className="text-xs text-gray-400 font-bold uppercase mb-1">Other Pickups</div>
