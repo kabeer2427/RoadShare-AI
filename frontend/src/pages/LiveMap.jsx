@@ -25,6 +25,7 @@ const LiveMap = () => {
   const { isLoaded, loadError } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '',
+    version: '3.64', // Pinned version because Heatmap Layer was removed in 3.65
     libraries
   });
 
