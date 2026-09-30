@@ -8,6 +8,7 @@ import Register from './pages/auth/Register';
 import CommuterDashboard from './pages/commuter/CommuterDashboard';
 import DriverDashboard from './pages/driver/DriverDashboard';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import LiveMap from './pages/LiveMap';
 
 // Placeholders for modular development
 // const CommuterDashboard = () => <div>Commuter Dashboard</div>;
@@ -30,6 +31,7 @@ function App() {
         <main className="flex-1 flex flex-col">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/live-map" element={<LiveMap />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             

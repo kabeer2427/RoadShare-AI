@@ -27,7 +27,7 @@ const Navbar = () => {
             </div>
             <div className="hidden md:ml-10 md:flex md:space-x-8 items-center">
               <Link to="/#how-it-works" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">How It Works</Link>
-              <Link to="/#live-map" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">Live Map</Link>
+              <Link to="/live-map" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500 animate-pulse inline-block"></span> Live Map</Link>
               <Link to="/register?role=driver" className="text-gray-500 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">For Drivers</Link>
             </div>
           </div>
