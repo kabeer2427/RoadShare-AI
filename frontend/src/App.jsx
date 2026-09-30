@@ -2,20 +2,19 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
+import DriverBottomNav from './components/DriverBottomNav';
 import Home from './pages/Home';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
-import CommuterDashboard from './pages/commuter/CommuterDashboard';
+import ForgotPassword from './pages/auth/ForgotPassword';
 import DriverDashboard from './pages/driver/DriverDashboard';
+import DriverProfile from './pages/driver/DriverProfile';
+import DriverRequests from './pages/driver/DriverRequests';
+import DriverRides from './pages/driver/DriverRides';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import LiveMap from './pages/LiveMap';
 import MoveFlowAssistant from './components/ai/MoveFlowAssistant';
 import ErrorBoundary from './components/ErrorBoundary';
-
-// Placeholders for modular development
-// const CommuterDashboard = () => <div>Commuter Dashboard</div>;
-// const DriverDashboard = () => <div>Driver Dashboard</div>;
-// const AdminDashboard = () => <div>Admin Dashboard</div>;
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, loading } = useAuth();
@@ -32,40 +31,65 @@ const AssistantWrapper = () => {
   return <MoveFlowAssistant />;
 };
 
+const LayoutWrapper = ({ children }) => {
+  const { user } = useAuth();
+  return (
+    <>
+      <Navbar />
+      <main className={`flex-1 flex flex-col relative ${user ? 'pb-16 md:pb-0' : ''}`}>
+        {children}
+      </main>
+      {user && user.role === 'driver' && <DriverBottomNav />}
+      <AssistantWrapper />
+    </>
+  );
+};
+
 function App() {
   return (
     <BrowserRouter>
       <ErrorBoundary>
         <div className="flex flex-col min-h-screen">
-          <Navbar />
-          <main className="flex-1 flex flex-col relative">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/live-map" element={<LiveMap />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            
-            <Route path="/commuter/*" element={
-              <ProtectedRoute allowedRoles={['commuter']}>
-                <CommuterDashboard />
-              </ProtectedRoute>
-            } />
-            
-            <Route path="/driver/*" element={
-              <ProtectedRoute allowedRoles={['driver']}>
-                <DriverDashboard />
-              </ProtectedRoute>
-            } />
-            
-            <Route path="/admin/*" element={
-              <ProtectedRoute allowedRoles={['admin']}>
-                <AdminDashboard />
-              </ProtectedRoute>
-            } />
-          </Routes>
-          <AssistantWrapper />
-        </main>
-      </div>
+          <LayoutWrapper>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/live-map" element={<LiveMap />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              
+              <Route path="/driver" element={
+                <ProtectedRoute allowedRoles={['driver']}>
+                  <DriverDashboard />
+                </ProtectedRoute>
+              } />
+              
+              <Route path="/driver/profile" element={
+                <ProtectedRoute allowedRoles={['driver']}>
+                  <DriverProfile />
+                </ProtectedRoute>
+              } />
+
+              <Route path="/driver/requests" element={
+                <ProtectedRoute allowedRoles={['driver']}>
+                  <DriverRequests />
+                </ProtectedRoute>
+              } />
+
+              <Route path="/driver/rides" element={
+                <ProtectedRoute allowedRoles={['driver']}>
+                  <DriverRides />
+                </ProtectedRoute>
+              } />
+              
+              <Route path="/admin/*" element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              } />
+            </Routes>
+          </LayoutWrapper>
+        </div>
       </ErrorBoundary>
     </BrowserRouter>
   );

@@ -7,6 +7,9 @@ export const assignDriversToClusters = async (clusters) => {
   for (const cluster of clusters) {
     const firstPickup = cluster.requests[0];
     
+    // Calculate required capacity for this cluster
+    const requiredCapacity = cluster.requests.reduce((sum, req) => sum + req.passenger_count, 0);
+    
     // Find nearby drivers via RPC
     const { data: drivers, error } = await supabase.rpc('find_nearby_drivers', {
       lat: firstPickup.pickup_lat,
@@ -15,13 +18,20 @@ export const assignDriversToClusters = async (clusters) => {
     });
 
     if (error || !drivers || drivers.length === 0) {
-      // Keep as pending or clustered but unassigned
       continue;
     }
 
-    // Filter available drivers (not currently on an active route, or has capacity)
+    // Filter available drivers by capacity constraint
+    // We assume find_nearby_drivers returns driver records joined with profiles to get vehicle_capacity
+    // or driver records have capacity
+    const eligibleDrivers = drivers.filter(d => (d.capacity || 4) >= requiredCapacity);
+
+    if (eligibleDrivers.length === 0) {
+      continue; // No driver has enough capacity
+    }
+
     // For MVP, just take the first available driver (closest)
-    const selectedDriver = drivers[0];
+    const selectedDriver = eligibleDrivers[0];
 
     // Create assignments in DB
     // 1. Create cluster

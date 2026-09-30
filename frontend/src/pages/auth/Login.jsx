@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { Navigation } from 'lucide-react';
 
 const Login = () => {
-  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -17,10 +17,11 @@ const Login = () => {
     setLoading(true);
     
     try {
-      const user = await login({ phone, password });
-      navigate(`/${user.role}`);
+      const user = await login({ email, password });
+      // Always redirect to driver dashboard since this is a driver-first app
+      navigate('/driver');
     } catch (err) {
-      setError(err.response?.data?.error?.message || 'Failed to login');
+      setError(err.response?.data?.error?.message || err.response?.data?.message || 'Failed to login. Please check your credentials.');
     } finally {
       setLoading(false);
     }
@@ -29,12 +30,12 @@ const Login = () => {
   return (
     <div className="flex min-h-screen flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gray-50">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
-        <Navigation className="mx-auto h-10 w-10 text-brand" />
+        <Navigation className="mx-auto h-12 w-12 text-brand" />
         <h2 className="mt-4 text-center text-3xl font-black tracking-tight text-gray-900">
-          Welcome back
+          Driver Portal
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600 font-medium">
-          Sign in to your MoveFlow account
+          Sign in to access your intelligent dashboard
         </p>
       </div>
 
@@ -50,20 +51,25 @@ const Login = () => {
             
             <div className="space-y-5">
               <div>
-                <label className="block text-sm font-bold leading-6 text-gray-700">Phone Number</label>
+                <label className="block text-sm font-bold leading-6 text-gray-700">Email Address</label>
                 <div className="mt-2">
                   <input
-                    type="text"
+                    type="email"
                     required
                     className="block w-full rounded-xl border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-brand sm:text-sm sm:leading-6 bg-gray-50"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-bold leading-6 text-gray-700">Password</label>
+                <div className="flex items-center justify-between">
+                  <label className="block text-sm font-bold leading-6 text-gray-700">Password</label>
+                  <Link to="/forgot-password" className="text-sm font-bold text-brand hover:text-brand-dark">
+                    Forgot password?
+                  </Link>
+                </div>
                 <div className="mt-2">
                   <input
                     type="password"
@@ -82,15 +88,15 @@ const Login = () => {
                 disabled={loading}
                 className="flex w-full justify-center rounded-xl bg-brand px-3 py-3 text-sm font-bold text-white shadow-lg shadow-brand/30 hover:bg-brand-dark hover:-translate-y-0.5 transition-all disabled:opacity-75 disabled:hover:translate-y-0 disabled:cursor-not-allowed"
               >
-                {loading ? 'Signing in...' : 'Sign in'}
+                {loading ? 'Signing in...' : 'Sign in as Driver'}
               </button>
             </div>
           </form>
 
           <p className="mt-6 text-center text-sm text-gray-500 font-medium">
-            Don't have an account?{' '}
+            Not registered as a driver yet?{' '}
             <Link to="/register" className="font-bold text-brand hover:text-brand-dark transition-colors">
-              Register now
+              Apply now
             </Link>
           </p>
         </div>
