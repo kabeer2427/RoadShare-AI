@@ -29,7 +29,7 @@ Current Context:
 
   try {
     const response = await ai.models.generateContent({
-        model: 'gemini-3.8-flash',
+        model: 'gemini-3.6-flash',
         contents: message,
         config: {
           systemInstruction: dynamicPrompt,
@@ -45,7 +45,7 @@ Current Context:
       
       // We send the function response back to the model to get a natural language reply
       const followupResponse = await ai.models.generateContent({
-        model: 'gemini-3.8-flash',
+        model: 'gemini-3.6-flash',
         contents: [
           { role: 'user', parts: [{ text: message }] },
           { role: 'model', parts: [{ functionCall }] },
